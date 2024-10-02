@@ -1,57 +1,57 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getDataReviews } from '../../services/api';
-import s from './MovieReviews.module.css';
-import Loader from '../Loader/Loader';
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getMoviesReview } from "../../servises/api";
+import styles from "./MovieReviews.module.css";
+import clsx from "clsx";
 
 const MovieReviews = () => {
-  const { moviesId } = useParams();
-  const [reviews, setReviews] = useState();
+  const { movieId } = useParams();
+  const [reviews, setReviews] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getReviewsData = async () => {
-      const reviewsData = await getDataReviews(moviesId);
-      setReviews(reviewsData);
+    if (!movieId) return;
+
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        const data = await getMoviesReview(movieId);
+        setReviews(data);
+      } catch (err) {
+        setError("Не удалось загрузить отзывы");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    getReviewsData();
-  }, [moviesId]);
+    fetchReviews();
+  }, [movieId]);
 
-  if (!reviews) return <Loader />;
+  if (loading) {
+    return <p className={styles.loading}>Загрузка...</p>;
+  }
+
+  if (error) {
+    return <p className={styles.error}>{error}</p>;
+  }
 
   if (reviews.length === 0) {
-    return <h2 className={s.noReviewsMessage}>No one has left a review...</h2>;
+    return <p className={styles.noReviews}>Нет отзывов</p>;
   }
 
   return (
-    <ul className={s.reviewContainer}>
-      {reviews.map(review => {
-        const avatarPath = review.author_details.avatar_path
-          ? `https://image.tmdb.org/t/p/w200${review.author_details.avatar_path}`
-          : 'https://image.tmdb.org/t/p/w200/5LdGr01PGRmrg6Hh3LYPGlOOdUx.jpg';
-
-        return (
-          <li className={s.reviewItem} key={review.id}>
-            <img
-              src={avatarPath}
-              alt={review.author_details.username}
-              className={s.reviewAvatar}
-              onError={e => {
-                e.target.src =
-                  'https://image.tmdb.org/t/p/w200/5LdGr01PGRmrg6Hh3LYPGlOOdUx.jpg';
-              }}
-            />
-            <div className={s.reviewContent}>
-              <h2 className={s.reviewAuthor}>
-                Author: <span>{review.author}</span>
-              </h2>
-              <p className={s.reviewCommentTitle}>Comment:</p>
-              <p className={s.reviewComment}> {review.content}</p>
-            </div>
+    <div className={styles.wrapper}>
+      <h3 className={styles.title}>Отзывы:</h3>
+      <ul className={styles.reviewList}>
+        {reviews.map((review) => (
+          <li key={review.id} className={styles.reviewItem}>
+            <p className={styles.author}>{review.author}</p>
+            <p className={styles.text}>{review.content}</p>
           </li>
-        );
-      })}
-    </ul>
+        ))}
+      </ul>
+    </div>
   );
 };
 

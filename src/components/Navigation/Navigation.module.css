@@ -1,46 +1,46 @@
-.navWrapper {
-    width: 100%;
-    background-color: #6a8299;
-    height: 80px;
+.nav {
+    background-color: #1e1e1e;
     display: flex;
     justify-content: space-between;
-    padding: 20px 40px;
     align-items: center;
+    padding: 15px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
 }
 
-.navTitle {
-    color: #f0f8ff;
-    border: 2px solid #1e4f7c;
-    padding: 10px;
+.titleWrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.title {
+    color: #fff;
     font-size: 1.5rem;
-    transition: all 300ms ease;
+    font-weight: 600;
 }
 
-.navTitle span {
-    color: #1e4f7c;
-}
-
-.navTitle:hover {
-    transform: scale(1.05);
-}
-
-.nav {
+.links {
     display: flex;
     gap: 20px;
 }
 
-.navLink {
-    color: #f0f8ff;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: all 300ms ease;
+.link {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #3e3e3e;
+    color: #fff;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.navLink:hover {
-    color: #1e4f7c;
+.link:hover {
+    background-color: #ffdd57;
+    color: #1e1e1e;
 }
 
-.activeLink {
-    color: #1e4f7c;
-    text-decoration: underline;
+.active {
+    background-color: #ffdd57;
+    color: #1e1e1e;
 }

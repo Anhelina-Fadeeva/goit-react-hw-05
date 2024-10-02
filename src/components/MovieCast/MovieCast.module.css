@@ -1,51 +1,63 @@
-.castContainer {
+.wrapper {
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #6c63ff;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.castList {
+    margin: 0;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 20px;
-    padding-bottom: 50px;
-    justify-content: center;
+    gap: 15px;
 }
 
 .castItem {
-    max-width: 180px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    width: 150px;
+    transition: transform 0.3s;
 }
 
 .castItem:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
 }
 
-.castAvatar {
+.profileImage {
     width: 100%;
-    height: 270px;
-    object-fit: cover;
-}
-
-.castDetails {
-    padding: 12px;
-    background-color: #6a8299;
     height: auto;
-    color: #f0f8ff;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
-.castName {
+.actorName {
     text-align: center;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 6px;
+    padding-top: 10px;
+    font-weight: 500;
+    color: #555;
 }
 
-.castCharacter span {
-    color: #044a99;
-}
-
-.castCharacter {
-    font-size: 0.9rem;
+.error {
+    color: red;
     text-align: center;
-    color: #f0f8ff;
+    margin-top: 20px;
 }
 
+.noCast {
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+}

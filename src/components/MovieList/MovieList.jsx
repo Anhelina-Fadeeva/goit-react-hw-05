@@ -1,28 +1,28 @@
-import MovieCardItem from '../MovieCardItem/MovieCardItem';
-import s from './MovieList.module.css';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from "react-router-dom";
+import styles from "./MovieList.module.css";
+import clsx from "clsx";
 
-const MovieList = ({ movieData }) => {
+const buildLinkClass = ({ isActive }) => {
+  return clsx(styles.link, isActive && styles.active);
+};
+
+const MovieList = ({ movies }) => {
   const location = useLocation();
-
-  if (movieData.length === 0) {
-    return (
-      <h2 className={s.noResultsMessage}>Nothing was found for your request...</h2>
-    );
-  }
-
+  
   return (
-    <div className={s.movieContainer}>
-      <ul className={s.movieGrid}>
-        {movieData.map(item => (
-          <li key={item.id} className={s.movieItem}>
-            <Link to={`/movies/${item.id}`} state={location}>
-              <MovieCardItem itemData={item} />
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className={styles.list}>
+      {movies.map((movie) => (
+        <li key={movie.id} className={styles.item}>
+          <NavLink
+            to={`/movies/${movie.id}`}
+            state={{ from: location }}
+            className={buildLinkClass}
+          >
+            {movie.title}
+          </NavLink>
+        </li>
+      ))}
+    </ul>
   );
 };
 

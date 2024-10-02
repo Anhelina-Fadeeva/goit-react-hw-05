@@ -1,28 +1,27 @@
-import clsx from 'clsx';
-import s from './Navigation.module.css';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import s from "./Navigation.module.css";
+import clsx from "clsx";
+
+const buildLinkClass = ({ isActive }) => {
+  return clsx(s.link, isActive && s.active);
+};
 
 const Navigation = () => {
-  const changeClassLink = ({ isActive }) => {
-    return clsx(s.navLink, isActive && s.activeLink);
-  };
-
   return (
-    <header className={s.navWrapper}>
-      <Link to='/'>
-        <h1 className={s.navTitle}>
-          Good <span>Cinema</span>
-        </h1>
-      </Link>
-      <nav className={s.nav}>
-        <NavLink to='/' className={changeClassLink}>
+    <nav className={s.nav}>
+      <div className={s.titleWrapper}>
+        {/* Удаляем иконку поиска */}
+        <span className={s.title}>Movie Finder</span>
+      </div>
+      <div className={s.links}>
+        <NavLink to="/" className={buildLinkClass}>
           Home
         </NavLink>
-        <NavLink to='/movies' className={changeClassLink}>
+        <NavLink to="/movies" className={buildLinkClass}>
           Movies
         </NavLink>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 };
 

@@ -1,52 +1,53 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getDataCredits } from '../../services/api';
-import s from './MovieCast.module.css';
-import Loader from '../Loader/Loader';
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getMoviesCredits } from "../../servises/api";
+import styles from "./MovieCast.module.css"; 
+
+const defaultImg = "https://dummyimage.com/400x600/cdcdcd/000.jpg&text=No+poster";
 
 const MovieCast = () => {
-  const { moviesId } = useParams();
-  const [cast, setCast] = useState();
+  const { movieId } = useParams();
+  const [cast, setCast] = useState([]);
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
-    const getCastData = async () => {
-      const castData = await getDataCredits(moviesId);
-      setCast(castData);
-    };
+    setError(null); 
+    getMoviesCredits(movieId)
+      .then(setCast)
+      .catch(() => {
+        setError("Unable to load actors. Please try again later!");
+      });
+  }, [movieId]);
 
-    getCastData();
-  }, [moviesId]);
-
-  if (!cast) return <Loader />;
+  if (error) {
+    return <p className={styles.error}>{error}</p>; 
+  }
+  
+  if (cast.length === 0) {
+    return <p className={styles.noCast}>Actors are not available for this movie.</p>; 
+  }
 
   return (
-    <ul className={s.castContainer}>
-      {cast.map(item => {
-        const avatarPath = item.profile_path
-          ? `https://image.tmdb.org/t/p/w200${item.profile_path}`
-          : 'https://image.tmdb.org/t/p/w200/5LdGr01PGRmrg6Hh3LYPGlOOdUx.jpg';
-
-        return (
-          <li className={s.castItem} key={item.id}>
+    <div className={styles.wrapper}>
+      <h3 className={styles.title}>Actors:</h3>
+      <ul className={styles.castList}>
+        {cast.map((actor) => (
+          <li key={actor.cast_id} className={styles.castItem}>
             <img
-              src={avatarPath}
-              alt={item.name}
-              className={s.castAvatar}
-              onError={e => {
-                e.target.src =
-                  'https://image.tmdb.org/t/p/w200/5LdGr01PGRmrg6Hh3LYPGlOOdUx.jpg';
-              }}
+              src={
+                actor.profile_path
+                  ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                  : defaultImg
+              }
+              alt={actor.name}
+              className={styles.profileImage}
             />
-            <div className={s.castDetails}>
-              <p className={s.castName}>{item.name}</p>
-              <p className={s.castCharacter}>
-                <span>Character:</span> {item.character}
-              </p>
-            </div>
+            <p className={styles.actorName}>{actor.name}</p>
           </li>
-        );
-      })}
-    </ul>
+        ))}
+      </ul>
+    </div>
   );
 };
+
 export default MovieCast;
